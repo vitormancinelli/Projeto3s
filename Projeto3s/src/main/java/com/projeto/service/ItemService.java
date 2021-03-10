@@ -44,7 +44,7 @@ public final class ItemService {
 				validate(item);
 				return Optional.of(repository.save(item));
 			} else {
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Item id não encontrado.");
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Item não encontrado.");
 			}
 		}
 		

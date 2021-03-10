@@ -7,8 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Item {
-	
+public class Parceiro {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -17,14 +17,14 @@ public class Item {
 	@Column(name = "nome", length = 60)
 	private String nome;
 	
-	@Column(name = "descricao", length = 60)
-	private String descricao;
+	@Column(name = "documento", length = 60)
+	private String documento;
 	
-	@Column(name = "valor")
-	private Double valor;
-	
-	@Column(name = "estoque")
-	private int estoque;
+	@Column(name = "endereco", length = 60)
+	private String endereco;
+
+	@Column(name = "email", length = 100)
+	private String email;
 
 	public Long getId() {
 		return id;
@@ -42,28 +42,28 @@ public class Item {
 		this.nome = nome;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getDocumento() {
+		return documento;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setDocumento(String documento) {
+		this.documento = documento;
 	}
 
-	public Double getValor() {
-		return valor;
+	public String getEndereco() {
+		return endereco;
 	}
 
-	public void setValor(Double valor) {
-		this.valor = valor;
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
 	}
 
-	public int getEstoque() {
-		return estoque;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setEstoque(int estoque) {
-		this.estoque = estoque;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-
+	
 }

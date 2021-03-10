@@ -19,49 +19,49 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 
-import com.projeto.domain.Item;
-import com.projeto.service.ItemService;
+import com.projeto.domain.Parceiro;
+import com.projeto.service.ParceiroService;
 
 @RestController
-public class ItemController {
-
+public class ParceiroController {
+	
 	@Autowired
-	private ItemService itemService;
+	private ParceiroService parceiroService;
 	
-	//Busca todos os itens cadastrados no banco
-	@GetMapping("/item")
-	List<Item> findAll() {
-		return itemService.findAll();
+	//Busca todos os parceiros cadastrados no banco
+	@GetMapping("/parceiro")
+	List<Parceiro> findAll() {
+		return parceiroService.findAll();
 	}
 	
-	//Busca o item cadastrado no banco com o id recebido
-	@GetMapping("/item/{id}")
-	Optional<Item> findById(@PathVariable Long id) {
-		return itemService.findById(id);
+	//Busca o parceiro cadastrado no banco com o id recebido
+	@GetMapping("/parceiro/{id}")
+	Optional<Parceiro> findbyId(@PathVariable Long id) {
+		return parceiroService.findById(id);
 	}
 	
-	//Conta quantos itens há cadastrados no banco
-	@GetMapping("/item/count")
-	Long count() {
-		return itemService.count();	
+	//Conta quantos parceiros há cadastrados no banco
+	@GetMapping("/parceiro/count")
+	long count() {
+		return parceiroService.count();
 	}
 	
-	//Insere o item recebido no banco
-	@PostMapping("/item")
-	Item insertItem(@RequestBody Item item) {
-		return itemService.save(item);
+	//Insere o parceiro recebido no banco
+	@PostMapping("/parceiro")
+	Parceiro insertParceiro(@RequestBody Parceiro parceiro) {
+		return parceiroService.save(parceiro);
 	}
 	
-	//Atualiza um item recebido, caso o item não exista, o item será inserido no banco
-	@PutMapping("/item/{id}")
-	Optional<Item> updateItem(@RequestBody Item item, @PathVariable Long id) {
-		return itemService.updateById(item, id);
+	//Atualiza um parceiro recebido, caso o parceiro não exista, o parceiro será inserido no banco
+	@PutMapping("/parceiro/{id}")
+	Optional<Parceiro> updateById(@RequestBody Parceiro parceiro, @PathVariable Long id) {
+		return parceiroService.updateById(parceiro, id);
 	}
 	
-	//Deleta o item pelo id recebido
-	@DeleteMapping("/item/{id}")
-	void deleteItem(@PathVariable Long id) {
-		itemService.deleteById(id);
+	//Deleta o parceiro pelo id recebido
+	@DeleteMapping("/parceiro/{id}")
+	void deleteParceiro(@PathVariable Long id) {
+		parceiroService.deleteById(id);
 	}
 	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -75,5 +75,5 @@ public class ItemController {
 		});
 		return errors;
 	}
-	
+
 }
