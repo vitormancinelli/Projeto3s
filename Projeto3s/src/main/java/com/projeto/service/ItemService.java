@@ -44,7 +44,7 @@ public final class ItemService {
 				validate(item);
 				return Optional.of(repository.save(item));
 			} else {
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Item id não achado.");
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Item id não encontrado.");
 			}
 		}
 		
@@ -54,7 +54,7 @@ public final class ItemService {
 		}
 		
 		private void validateIdNotNull(Long id) {
-			if(id == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Item id não válido.");
+			if(id == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Item id inválido.");
 		}
 		
 		private void validate(Item item) {
