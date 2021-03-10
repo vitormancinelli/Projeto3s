@@ -59,7 +59,7 @@ public final class ParceiroService {
 	
 	private void validate(Parceiro parceiro) {
 		if(parceiro.getNome() == null || parceiro.getNome().length() > 60) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Nome do parceiro inválido.");
-		if(parceiro.getDocumento() == null || parceiro.getDocumento().length() > 60) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Documento do parceiro inválido.");
+		if(parceiro.getDocumento() == null || parceiro.getDocumento().length() > 14) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Documento do parceiro inválido.");
 		if(parceiro.getEndereco() == null || parceiro.getEndereco().length() > 60) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Endereço do parceiro inválido.");
 		if(parceiro.getEmail() == null || parceiro.getEmail().length() > 100) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Email do parceiro inválido.");
 	}

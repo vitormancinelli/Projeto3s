@@ -17,7 +17,7 @@ public class Parceiro {
 	@Column(name = "nome", length = 60)
 	private String nome;
 	
-	@Column(name = "documento", length = 60)
+	@Column(name = "documento", length = 14)
 	private String documento;
 	
 	@Column(name = "endereco", length = 60)
