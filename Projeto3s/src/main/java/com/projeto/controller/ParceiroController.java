@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,18 @@ public class ParceiroController {
 	@GetMapping("/parceiro/{id}")
 	Optional<Parceiro> findbyId(@PathVariable Long id) {
 		return parceiroService.findById(id);
+	}
+	
+	//Busca todos os parceiros que o nome seja igual ao recebido
+	@GetMapping("/parceiro/nome")
+	List<Parceiro> findByNome(@RequestParam String nome) {
+		return parceiroService.findByNome(nome);
+	}
+	
+	//Busca todos os parceiros que o documento seja igual ao recebido
+	@GetMapping("/parceiro/documento")
+	List<Parceiro> findByDocumento(@RequestParam String documento) {
+		return parceiroService.findByDocumento(documento);
 	}
 	
 	//Conta quantos parceiros há cadastrados no banco

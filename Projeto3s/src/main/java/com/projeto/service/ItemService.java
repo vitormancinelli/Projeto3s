@@ -26,6 +26,11 @@ public final class ItemService {
 			return repository.findById(id);
 		}
 		
+		public List<Item> findByNome(String nome) {
+			validateNomeNotNull(nome);
+			return repository.findByNome(nome);
+		}
+		
 		public Long count() {
 			return repository.count();
 		}
@@ -54,7 +59,11 @@ public final class ItemService {
 		}
 		
 		private void validateIdNotNull(Long id) {
-			if(id == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Item id inválido.");
+			if(id == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Id inválido.");
+		}
+		
+		private void validateNomeNotNull(String nome) {
+			if(nome == null || nome.length() > 60) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Nome inválido.");
 		}
 		
 		private void validate(Item item) {

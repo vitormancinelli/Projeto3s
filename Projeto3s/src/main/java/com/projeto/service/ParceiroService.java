@@ -26,6 +26,16 @@ public final class ParceiroService {
 		return repository.findById(id);
 	}
 	
+	public List<Parceiro> findByNome(String nome) {
+		validateNomeNotNull(nome);
+		return repository.findByNome(nome);
+	}
+	
+	public List<Parceiro> findByDocumento(String documento) {
+		validateDocumentoNotNull(documento);
+		return repository.findByDocumento(documento);
+	}
+	
 	public long count() {
 		return repository.count();
 	}
@@ -54,7 +64,15 @@ public final class ParceiroService {
 	}
 	
 	private void validateIdNotNull(Long id) {
-		if(id == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Parceiro id inválido.");
+		if(id == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Id inválido.");
+	}
+	
+	private void validateNomeNotNull(String nome) {
+		if(nome == null || nome.length() > 60) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Nome inválido.");
+	}
+	
+	private void validateDocumentoNotNull(String documento) {
+		if(documento == null || documento.length() > 14) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Documento inválido.");
 	}
 	
 	private void validate(Parceiro parceiro) {
