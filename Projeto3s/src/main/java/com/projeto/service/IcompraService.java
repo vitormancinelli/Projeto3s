@@ -55,6 +55,14 @@ public final class IcompraService {
 		if(icompra.getId() != null) {
 			icompra.setId(null);
 		}
+		
+		Optional<Item> tmp = itemService.findById(icompra.getItem().getId());
+		Item item = new Item();
+		item = tmp.get();
+		if(item != null) {
+			item.setEstoque(item.getEstoque() + icompra.getQuantidade());
+			itemService.updateById(item, item.getId());
+		}
 		return repository.save(icompra);
 	}
 	
@@ -62,6 +70,18 @@ public final class IcompraService {
 		if(repository.existsById(id)) {
 			icompra.setId(id);
 			validate(icompra);
+			
+			Optional<Icompra> icompraTmp = repository.findById(id);
+			Icompra icompraAnterior = new Icompra();
+			icompraAnterior = icompraTmp.get();
+			
+			Optional<Item> itemTmp = itemService.findById(icompra.getItem().getId());
+			Item item = new Item();
+			item = itemTmp.get();
+			if(item != null) {
+				item.setEstoque(item.getEstoque() + icompra.getQuantidade() - icompraAnterior.getQuantidade());
+				itemService.updateById(item, item.getId());
+			}
 			return Optional.of(repository.save(icompra));
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Icompra não encontrada");
