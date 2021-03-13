@@ -44,6 +44,7 @@ public final class ItemService {
 		}
 		
 		public Optional<Item> updateById(Item item, Long id) {
+			validateIdNotNull(id);
 			if(repository.existsById(id)) {
 				item.setId(id);
 				validate(item);

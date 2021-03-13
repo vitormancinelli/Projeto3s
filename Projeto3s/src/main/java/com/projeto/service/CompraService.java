@@ -49,6 +49,7 @@ public final class CompraService {
 	}
 	
 	public Optional<Compra> updateById(Compra compra, Long id) {
+		validateIdNotNull(id);
 		if(repository.existsById(id)) {
 			compra.setId(id);
 			validate(compra);

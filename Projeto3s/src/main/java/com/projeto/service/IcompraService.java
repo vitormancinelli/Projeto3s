@@ -67,6 +67,7 @@ public final class IcompraService {
 	}
 	
 	public Optional<Icompra> updateById(Icompra icompra, Long id) {
+		validateIdNotNull(id);
 		if(repository.existsById(id)) {
 			icompra.setId(id);
 			validate(icompra);

@@ -49,6 +49,7 @@ public final class ParceiroService {
 	}
 	
 	public Optional<Parceiro> updateById(Parceiro parceiro, Long id) {
+		validateIdNotNull(id);
 		if(repository.existsById(id)) {
 			parceiro.setId(id);
 			validate(parceiro);
