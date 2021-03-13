@@ -80,7 +80,11 @@ public final class IcompraService {
 			item = itemTmp.get();
 			if(item != null) {
 				item.setEstoque(item.getEstoque() + icompra.getQuantidade() - icompraAnterior.getQuantidade());
-				itemService.updateById(item, item.getId());
+				if(item.getEstoque() >= 0) {
+					itemService.updateById(item, item.getId());
+				} else {
+					throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Atualização não autorizada, valor do estoque ficaria abaixo de 0");
+				}
 			}
 			return Optional.of(repository.save(icompra));
 		} else {
