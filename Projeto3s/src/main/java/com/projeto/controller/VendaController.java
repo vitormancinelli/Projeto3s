@@ -20,55 +20,61 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 
-import com.projeto.domain.Compra;
-import com.projeto.service.CompraService;
+import com.projeto.domain.Venda;
+import com.projeto.service.VendaService;
 
 @RestController
-public class CompraController {
+public class VendaController {
 
 	@Autowired
-	private CompraService compraService;
+	private VendaService vendaService;
 	
-	//Busca todas as compras cadastrados no banco
-	@GetMapping("/compra")
-	List<Compra> findAll() {
-		return compraService.findAll();
+	//Busca todas as vendas cadastradas no banco
+	@GetMapping("/venda")
+	List<Venda> findAll() {
+		return vendaService.findAll();
 	}
 	
-	//Busca a compra cadastrado no banco com o id recebido
-	@GetMapping("/compra/{id}") 
-	Optional<Compra> findById(@PathVariable Long id) {
-		return compraService.findById(id);
+	//Busca a venda cadastrada na banco com o id recebido
+	@GetMapping("/venda/{id}")
+	Optional<Venda> findById(@PathVariable Long id) {
+		return vendaService.findById(id);
 	}
 	
-	//Busca todas as compras que contém o parceiro recebido
-	@GetMapping("/compra/parceiro")
-	List<Compra> findByIdParceiro(@RequestParam Long id) {
-		return compraService.findByIdParceiro(id);
+	//Busca todas as vendas que contém o parceiro recebido
+	@GetMapping("/venda/parceiro")
+	List<Venda> findByParceiro(@RequestParam Long id) {
+		return vendaService.findByParceiro(id);
 	}
 	
-	//Conta quantas compras há cadastrados no banco
-	@GetMapping("/compra/count")
+	//Busca todas as vendas que contém o status recebido
+	@GetMapping("/venda/status")
+	List<Venda> findByStatus(@RequestParam Long id) {
+		return vendaService.findByStatus(id);
+	}
+	
+	//Conta quantas vendas há cadastradas no banco
+	@GetMapping("/venda/count")
 	long count() {
-		return compraService.count();
+		return vendaService.count();
 	}
 	
-	//Insere a compra recebida no banco
-	@PostMapping("/compra")
-	Compra insertCompra(@RequestBody Compra compra) {
-		return compraService.save(compra);
+	//Insere a venda recebida na banco
+	@PostMapping("/venda")
+	Venda insertVenda(@RequestBody Venda venda) {
+		return vendaService.save(venda);
 	}
 	
-	//Atualiza uma compra recebida, caso a compra não exista, a compra será inserida no banco
-	@PutMapping("/compra/{id}")
-	Optional<Compra> updateCompraById(@RequestBody Compra compra, @PathVariable Long id) {
-		return compraService.updateById(compra, id);
+	//Atualiza a venda recebida, caso a venda não exista, a venda será inserida no banco
+	@PutMapping("/venda/{id}")
+	Optional<Venda> updateVendaById(@RequestBody Venda venda, @PathVariable Long id) {
+		return vendaService.updateById(venda, id);
 	}
 	
-	//Deleta a compra do banco, com o id recebido
-	@DeleteMapping("/compra/{id}")
+	//Deleta a venda do banco, com o id recebido
+	@DeleteMapping("/venda/{id}")
 	void deleteById(@PathVariable Long id) {
-		compraService.deleteById(id);
+		vendaService.deleteById(id);
 	}
 	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

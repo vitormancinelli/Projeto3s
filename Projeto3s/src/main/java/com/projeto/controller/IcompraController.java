@@ -42,13 +42,13 @@ public class IcompraController {
 	}
 	
 	//Busca todos os itens compra cadastrados no banco, com a compra recebida
-	@GetMapping("/icompra/compraId")
+	@GetMapping("/icompra/compra")
 	List<Icompra> findByCompraId(@RequestParam Long id) {
 		return icompraService.findByIdCompra(id);
 	}
 	
 	//Busca todos os itens compra cadastrados no banco, com o item recebido
-	@GetMapping("/icompra/itemId")
+	@GetMapping("/icompra/item")
 	List<Icompra> findByItemId(@RequestParam Long id) {
 		return icompraService.findByIdItem(id);
 	}
