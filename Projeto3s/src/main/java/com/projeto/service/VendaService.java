@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.projeto.domain.Status;
+import com.projeto.domain.MeioPagamento;
 import com.projeto.domain.Parceiro;
 import com.projeto.domain.Venda;
 import com.projeto.repository.VendaRepository;
@@ -21,6 +22,9 @@ public final class VendaService {
 	
 	@Autowired
 	private ParceiroService parceiroService;
+	
+	@Autowired
+	private MeioPagamentoService meioPagamentoService;
 	
 	@Autowired
 	private VendaRepository repository;
@@ -57,6 +61,17 @@ public final class VendaService {
 		
 	}
 	
+	public List<Venda> findByPagamento(Long id) {
+		validateIdNotNull(id);
+		Optional<MeioPagamento> tmp = meioPagamentoService.findById(id);
+		MeioPagamento pagamento = tmp.get();
+		if(pagamento != null) {
+			return repository.findByPagamento(pagamento);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pagamento não encontrado");
+		}
+	}
+	
 	public long count() {
 		return repository.count();
 	}
@@ -74,6 +89,13 @@ public final class VendaService {
 		if(repository.existsById(id)) {
 			venda.setId(id);
 			validate(venda);
+			
+			Optional<Venda> tmp = repository.findById(id);
+			Venda vendaAnterior = tmp.get();
+			
+			if(vendaAnterior.getStatus().getId() == 8) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Venda já foi cancelado, não pode ser alterada");
+			}
 			return Optional.of(repository.save(venda));
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Venda não encontrada");

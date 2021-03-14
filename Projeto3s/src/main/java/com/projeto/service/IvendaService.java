@@ -66,16 +66,14 @@ public final class IvendaService {
 			ivenda.setId(null);
 		}
 		
-		if(checkStatusVenda(ivenda)) {
-			Optional<Item> tmp = itemService.findById(ivenda.getItem().getId());
-			Item item = tmp.get();
-			if(item != null) {
-				item.setEstoque(item.getEstoque() - ivenda.getQuantidade());
-				if(item.getEstoque() < 0) {
-					throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Venda desse item não permitida, item do estoque insuficente");
-				} else {
-					itemService.updateById(item, item.getId());	
-				}
+		Optional<Item> tmp = itemService.findById(ivenda.getItem().getId());
+		Item item = tmp.get();
+		if(item != null) {
+			item.setEstoque(item.getEstoque() - ivenda.getQuantidade());
+			if(item.getEstoque() < 0) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Venda desse item não permitida, item do estoque insuficente");
+			} else {
+				itemService.updateById(item, item.getId());	
 			}
 		}
 		return repository.save(ivenda);
@@ -86,22 +84,32 @@ public final class IvendaService {
 		if(repository.existsById(id)) {
 			ivenda.setId(id);
 			validate(ivenda);
+
+			Optional<Venda> vendaTmp = vendaService.findById(ivenda.getVenda().getId());
+			Venda venda = vendaTmp.get();
 			
-			if(checkStatusVenda(ivenda)) {
-				Optional<Ivenda> ivendaTmp = repository.findById(id);
-				Ivenda ivendaAnterior = ivendaTmp.get();
+			Optional<Ivenda> ivendaTmp = repository.findById(id);
+			Ivenda ivendaAnterior = ivendaTmp.get();
+			
+			if(ivendaAnterior.getVenda().getStatus().getId() == 8) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item venda não pode ser alterado, porque a venda foi cancelada");
+			}
+			
+			//venda cancelado, então estoque volta ao valor anterior
+			if(venda.getStatus().getId() == 8) {
 				
-				Optional<Item> itemTmp = itemService.findById(id);
+				Optional<Item> itemTmp = itemService.findById(ivenda.getItem().getId());
 				Item item = itemTmp.get();
+				
 				if(item != null) {
-					item.setEstoque(item.getEstoque() + ivendaAnterior.getQuantidade() - ivenda.getQuantidade());
+					item.setEstoque(item.getEstoque() + ivenda.getQuantidade());
 					if(item.getEstoque() < 0) {
 						throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Venda desse item não permitida, item do estoque insuficente");
 					} else {
 						itemService.updateById(item, item.getId());	
 					}
 				}
-			}
+			}	
 			return Optional.of(repository.save(ivenda));
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ivenda não encontrada");
@@ -111,30 +119,6 @@ public final class IvendaService {
 	public void deleteById(Long id) {
 		validateIdNotNull(id);
 		repository.deleteById(id);
-	}
-	
-	//True precisa atualizar o estoque do item
-	//False não precisa atualizar o estoque do item
-	private boolean checkStatusVenda(Ivenda ivenda) {
-		if(ivenda.getVenda().getStatus() == null) {
-			//Estoque do item não foi atualizado
-			return true;
-		} else {
-			if(ivenda.getVenda().getStatus().getId() > 1 && ivenda.getVenda().getStatus().getId() != 8) {
-				Optional<Venda> tmp = vendaService.findById(ivenda.getVenda().getId());
-				Venda vendaAnterior = tmp.get();
-				if(vendaAnterior.getStatus().getId() > 1 && vendaAnterior.getStatus().getId() != 8) {
-					//Estoque do item já foi atualizado
-					return false;
-				} else {
-					//Estoque do item não foi atualizado
-					return true;
-				}
-			} else {
-				//Estoque do item já foi atualizado
-				return false;
-			}
-		}
 	}
 	
 	private void validateIdNotNull(Long id) {

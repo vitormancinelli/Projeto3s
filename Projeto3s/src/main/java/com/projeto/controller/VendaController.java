@@ -53,6 +53,12 @@ public class VendaController {
 		return vendaService.findByStatus(id);
 	}
 	
+	//Busca todas as vendas que contém o pagamento recebido
+	@GetMapping("/venda/pagamento")
+	List<Venda> findByPagamento(@RequestParam Long id) {
+		return vendaService.findByPagamento(id);
+	}
+	
 	//Conta quantas vendas há cadastradas no banco
 	@GetMapping("/venda/count")
 	long count() {

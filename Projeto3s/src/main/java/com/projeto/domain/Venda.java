@@ -31,6 +31,10 @@ public class Venda {
 	
 	@Column(name = "endereco", length = 60)
 	private String endereco;
+	
+	@ManyToOne
+	@JoinColumn(name = "pagamento")
+	private MeioPagamento pagamento;
 
 	public Long getId() {
 		return id;
@@ -38,6 +42,14 @@ public class Venda {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public MeioPagamento getPagamento() {
+		return pagamento;
+	}
+
+	public void setPagamento(MeioPagamento pagamento) {
+		this.pagamento = pagamento;
 	}
 
 	public Parceiro getParceiro() {
