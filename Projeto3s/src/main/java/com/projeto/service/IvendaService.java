@@ -66,8 +66,15 @@ public final class IvendaService {
 			ivenda.setId(null);
 		}
 		
-		Optional<Item> tmp = itemService.findById(ivenda.getItem().getId());
-		Item item = tmp.get();
+		Optional<Venda> vendaTmp = vendaService.findById(ivenda.getVenda().getId());
+		Venda venda = vendaTmp.get();
+		
+		if(venda.getStatus().getId() == 8) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item venda não pode ser adicionado, porque a venda foi cancelada");
+		}
+		
+		Optional<Item> itemTmp = itemService.findById(ivenda.getItem().getId());
+		Item item = itemTmp.get();
 		if(item != null) {
 			item.setEstoque(item.getEstoque() - ivenda.getQuantidade());
 			if(item.getEstoque() < 0) {
