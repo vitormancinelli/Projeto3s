@@ -1,7 +1,6 @@
 package com.projeto.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,8 +10,8 @@ import com.projeto.domain.Icompra;
 
 public interface IcompraRepository extends JpaRepository<Icompra, Long>{
 
-	List<Icompra> findByCompra(Optional<Compra> compra);
+	List<Icompra> findByCompra(Compra compra);
 	
-	List<Icompra> findByItem(Optional<Item> item);
+	List<Icompra> findByItem(Item item);
 
 }

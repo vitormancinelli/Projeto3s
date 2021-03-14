@@ -36,14 +36,24 @@ public final class IcompraService {
 	
 	public List<Icompra> findByIdCompra(Long id) {
 		validateIdNotNull(id);
-		Optional<Compra> compra = compraService.findById(id);
-		return repository.findByCompra(compra);
+		Optional<Compra> tmp = compraService.findById(id);
+		Compra compra = tmp.get();
+		if(compra != null) {
+			return repository.findByCompra(compra);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra não encontrada");
+		}
 	}
 	
 	public List<Icompra> findByIdItem(Long id) {
 		validateIdNotNull(id);
-		Optional<Item> item = itemService.findById(id);
-		return repository.findByItem(item);
+		Optional<Item> tmp = itemService.findById(id);
+		Item item = tmp.get();
+		if(item != null) {
+			return repository.findByItem(item);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item não encontrado");
+		}
 	}
 	
 	public long count() {
@@ -57,8 +67,7 @@ public final class IcompraService {
 		}
 		
 		Optional<Item> tmp = itemService.findById(icompra.getItem().getId());
-		Item item = new Item();
-		item = tmp.get();
+		Item item = tmp.get();
 		if(item != null) {
 			item.setEstoque(item.getEstoque() + icompra.getQuantidade());
 			itemService.updateById(item, item.getId());
@@ -73,12 +82,10 @@ public final class IcompraService {
 			validate(icompra);
 			
 			Optional<Icompra> icompraTmp = repository.findById(id);
-			Icompra icompraAnterior = new Icompra();
-			icompraAnterior = icompraTmp.get();
+			Icompra icompraAnterior = icompraTmp.get();
 			
 			Optional<Item> itemTmp = itemService.findById(icompra.getItem().getId());
-			Item item = new Item();
-			item = itemTmp.get();
+			Item item = itemTmp.get();
 			if(item != null) {
 				item.setEstoque(item.getEstoque() + icompra.getQuantidade() - icompraAnterior.getQuantidade());
 				if(item.getEstoque() >= 0) {
