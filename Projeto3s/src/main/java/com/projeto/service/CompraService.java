@@ -32,8 +32,13 @@ public final class CompraService {
 	
 	public List<Compra> findByIdParceiro(Long id) {
 		validateIdNotNull(id);
-		Optional<Parceiro> parceiro = parceiroService.findById(id);
-		return repository.findByParceiro(parceiro);
+		Optional<Parceiro> tmp = parceiroService.findById(id);
+		Parceiro parceiro = tmp.get();
+		if(parceiro != null) {
+			return repository.findByParceiro(parceiro);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Parceiro não encontrado");
+		}
 	}
 	
 	public long count() {
